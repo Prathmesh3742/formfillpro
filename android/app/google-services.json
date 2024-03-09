@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "444989182641",
+    "firebase_url": "https://formfillpro-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "formfillpro",
+    "storage_bucket": "formfillpro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444989182641:android:2b3dca3ddaf995ead6c890",
+        "android_client_info": {
+          "package_name": "com.example.formfillpro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbbHrVrYvjyv7t_889tNPhK67xQsTWOao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
