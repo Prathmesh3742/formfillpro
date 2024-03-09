@@ -132,20 +132,6 @@ class SecondScreen extends StatelessWidget {
                                       'Aadhar Card',
                                       style: textColor5,
                                     ),
-                                    // SizedBox(height: 10),
-                                    // Row(
-                                    //   children: [
-                                    //     Icon(
-                                    //       Icons.location_on_sharp,
-                                    //       color: backGroundColor,
-                                    //       size: 26,
-                                    //     ),
-                                    //     Text(
-                                    //       'Pang Masha,Thailand',
-                                    //       style: textColor8,
-                                    //     ),
-                                    //   ],
-                                    // ),
                                   ],
                                 ),
                                 Row(
@@ -177,89 +163,100 @@ class SecondScreen extends StatelessWidget {
                     desc,
                     style: textColor11,
                   ),
-                  // const SizedBox(height: 15),
-                  // Text(
-                  //   'Facilities',
-                  //   style: textColor2,
-                  // ),
-                  // const SizedBox(height: 20),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: [
-                  //     Container(
-                  //       padding: EdgeInsets.symmetric(
-                  //           horizontal: width * 0.04, vertical: 6),
-                  //       decoration: BoxDecoration(
-                  //         color: searchBarColor,
-                  //         borderRadius: getBorderRadiusWidget(context, 0.03),
-                  //       ),
-                  //       child: Row(
-                  //         children: [
-                  //           const Icon(
-                  //             Icons.bed,
-                  //             color: greyColor,
-                  //             size: 28,
-                  //           ),
-                  //           SizedBox(width: width * 0.03),
-                  //           const Text(
-                  //             '1',
-                  //             style: textColor9,
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     Container(
-                  //       padding: EdgeInsets.symmetric(
-                  //           horizontal: width * 0.04, vertical: 6),
-                  //       decoration: BoxDecoration(
-                  //         color: searchBarColor,
-                  //         borderRadius: getBorderRadiusWidget(context, 0.03),
-                  //       ),
-                  //       child: Row(
-                  //         children: [
-                  //           const Icon(
-                  //             Icons.wifi,
-                  //             color: greyColor,
-                  //             size: 28,
-                  //           ),
-                  //           SizedBox(width: width * 0.03),
-                  //           const Text(
-                  //             'Wifi',
-                  //             style: textColor9,
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     Container(
-                  //       padding: EdgeInsets.symmetric(
-                  //           horizontal: width * 0.04, vertical: 6),
-                  //       decoration: BoxDecoration(
-                  //         color: searchBarColor,
-                  //         borderRadius: getBorderRadiusWidget(context, 0.03),
-                  //       ),
-                  //       child: Row(
-                  //         children: [
-                  //           const Icon(
-                  //             Icons.tv,
-                  //             color: greyColor,
-                  //             size: 28,
-                  //           ),
-                  //           SizedBox(width: width * 0.03),
-                  //           const Text(
-                  //             'Tv',
-                  //             style: textColor9,
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Updates',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Update options
+                  const UpdateOption(
+                    name: 'Name Update',
+                    documentsRequired: 'Identity Proof',
+                  ),
+                  const UpdateOption(
+                    name: 'Address Update',
+                    documentsRequired: 'Proof of Address',
+                  ),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class UpdateOption extends StatefulWidget {
+  final String name;
+  final String documentsRequired;
+
+  const UpdateOption({
+    Key? key,
+    required this.name,
+    required this.documentsRequired,
+  }) : super(key: key);
+
+  @override
+  _UpdateOptionState createState() => _UpdateOptionState();
+}
+
+class _UpdateOptionState extends State<UpdateOption> {
+  bool expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                widget.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  expanded = !expanded;
+                });
+              },
+              child: Icon(
+                expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                size: 24,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 3),
+        if (expanded) ...[
+          Column(
+            children: [
+              const Text(
+                "Documents Required:",
+                style: TextStyle(
+                  color: greyColor,fontFamily: 'medium',fontSize: 16,fontWeight: FontWeight.w300,
+                )
+              ),
+              Text(
+                widget.documentsRequired,
+                style:  const TextStyle(fontSize: 14,color: greyColor,fontFamily: 'medium',fontWeight: FontWeight.w600,height: 1.3),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+        ],
+        const SizedBox(height: 4),
+      ],
     );
   }
 }
