@@ -175,11 +175,11 @@ class SecondScreen extends StatelessWidget {
                   // Update options
                   const UpdateOption(
                     name: 'Name Update',
-                    documentsRequired: 'Identity Proof',
+                    documentsRequired: ['Identity Proof','Bank Passbook'],
                   ),
                   const UpdateOption(
                     name: 'Address Update',
-                    documentsRequired: 'Proof of Address',
+                    documentsRequired: ['Proof of Address','Any gov document'],
                   ),
                 ],
               ),
@@ -193,7 +193,7 @@ class SecondScreen extends StatelessWidget {
 
 class UpdateOption extends StatefulWidget {
   final String name;
-  final String documentsRequired;
+  final List<String> documentsRequired;
 
   const UpdateOption({
     Key? key,
@@ -240,16 +240,56 @@ class _UpdateOptionState extends State<UpdateOption> {
         const SizedBox(height: 3),
         if (expanded) ...[
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "Documents Required:",
                 style: TextStyle(
-                  color: greyColor,fontFamily: 'medium',fontSize: 16,fontWeight: FontWeight.w300,
-                )
+                  color: greyColor,
+                  fontFamily: 'medium',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
-              Text(
-                widget.documentsRequired,
-                style:  const TextStyle(fontSize: 14,color: greyColor,fontFamily: 'medium',fontWeight: FontWeight.w600,height: 1.3),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: widget.documentsRequired
+                    .map(
+                      (document) => Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.fiber_manual_record, size: 10),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                document,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: greyColor,
+                                  fontFamily: 'medium',
+                                  fontWeight: FontWeight.w600,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Implement your apply button functionality here
+                  },
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                  ),
+                  child: const Text('Apply'),
+                ),
               ),
             ],
           ),
