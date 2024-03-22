@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formfillpro/home_page/screens/DocumentUploadForm.dart';
 import 'package:formfillpro/home_page/screens/first_screen.dart';
 import 'package:formfillpro/home_page/tools/border.dart';
 import 'package:formfillpro/home_page/tools/colors.dart';
@@ -176,10 +177,12 @@ class SecondScreen extends StatelessWidget {
                   const UpdateOption(
                     name: 'Name Update',
                     documentsRequired: ['Identity Proof','Bank Passbook'],
+                    uploadFormFields: ['Identity Proof','Bank Passbook'],
                   ),
                   const UpdateOption(
                     name: 'Address Update',
                     documentsRequired: ['Proof of Address','Any gov document'],
+                    uploadFormFields: ['Proof of Address','Any gov document'],
                   ),
                 ],
               ),
@@ -194,16 +197,19 @@ class SecondScreen extends StatelessWidget {
 class UpdateOption extends StatefulWidget {
   final String name;
   final List<String> documentsRequired;
+  final List<String> uploadFormFields; // New parameter
 
   const UpdateOption({
     Key? key,
     required this.name,
     required this.documentsRequired,
+    required this.uploadFormFields, // New parameter
   }) : super(key: key);
 
   @override
   _UpdateOptionState createState() => _UpdateOptionState();
 }
+
 
 class _UpdateOptionState extends State<UpdateOption> {
   bool expanded = false;
@@ -283,7 +289,15 @@ class _UpdateOptionState extends State<UpdateOption> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Implement your apply button functionality here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DocumentUploadForm(
+                          fieldNames: widget.uploadFormFields,
+                          headerTitle: widget.name
+                        ),
+                      ),
+                    );
                   },
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.green),

@@ -3,6 +3,8 @@ import 'package:formfillpro/reusable_widgets/reusable_widget.dart';
 import 'package:formfillpro/screens/home_screen.dart';
 import 'package:formfillpro/utils/color_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:formfillpro/home_page/screens/nav_screen.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -67,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       .then((value) {
                     print("Created New Account");
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                        MaterialPageRoute(builder: (context) => NavScreen()));
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });

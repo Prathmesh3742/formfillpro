@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:formfillpro/home_page/screens/nav_screen.dart';
-// import 'package:formfillpro/screens/signin_screen.dart';
+import 'package:formfillpro/screens/signin_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      // home: const SignInScreen(),
-      home: const NavScreen(),
+      home: const SignInScreen(),
+      // home: const NavScreen(),
     );
   }
 }
