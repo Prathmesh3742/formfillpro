@@ -177,12 +177,10 @@ class SecondScreen extends StatelessWidget {
                   const UpdateOption(
                     name: 'Name Update',
                     documentsRequired: ['Identity Proof','Bank Passbook'],
-                    uploadFormFields: ['Identity Proof','Bank Passbook'],
                   ),
                   const UpdateOption(
                     name: 'Address Update',
                     documentsRequired: ['Proof of Address','Any gov document'],
-                    uploadFormFields: ['Proof of Address','Any gov document'],
                   ),
                 ],
               ),
@@ -197,13 +195,11 @@ class SecondScreen extends StatelessWidget {
 class UpdateOption extends StatefulWidget {
   final String name;
   final List<String> documentsRequired;
-  final List<String> uploadFormFields; // New parameter
 
   const UpdateOption({
     Key? key,
     required this.name,
     required this.documentsRequired,
-    required this.uploadFormFields, // New parameter
   }) : super(key: key);
 
   @override
@@ -293,7 +289,7 @@ class _UpdateOptionState extends State<UpdateOption> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => DocumentUploadForm(
-                          fieldNames: widget.uploadFormFields,
+                          fieldNames: widget.documentsRequired,
                           headerTitle: widget.name
                         ),
                       ),

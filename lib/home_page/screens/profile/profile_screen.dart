@@ -9,7 +9,8 @@ import 'components/profile_pic.dart';
 class ProfileScreen extends StatelessWidget {
   static String routeName = "/profile";
 
-  const ProfileScreen({super.key});
+  const ProfileScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,12 +53,16 @@ class ProfileScreen extends StatelessWidget {
               text: "Log Out",
               icon: "assets/icons/Log out.svg",
               press: () {
-            FirebaseAuth.instance.signOut().then((value) {
-              // print("Signed Out");
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SignInScreen()));
-            });
-          },
+                FirebaseAuth.instance.signOut().then((value) {
+                  // Navigate back to the sign-in screen and replace the current screen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignInScreen(),
+                    ),
+                  );
+                });
+              },
             ),
           ],
         ),

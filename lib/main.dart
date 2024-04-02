@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:formfillpro/firebase_options.dart';
 import 'package:formfillpro/home_page/screens/nav_screen.dart';
 import 'package:formfillpro/screens/signin_screen.dart';
-
-import 'package:flutter/material.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,20 +14,33 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Your App Title',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        
       ),
-      debugShowCheckedModeBanner: false,
-      home: const SignInScreen(),
-      // home: const NavScreen(),
+      home: AuthenticationWrapper(),
+      debugShowCheckedModeBanner: false, 
+    );
+  }
+}
+
+class AuthenticationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasData) {
+          return const NavScreen();
+        } else {
+          return const SignInScreen();
+        }
+      },
     );
   }
 }

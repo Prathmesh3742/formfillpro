@@ -48,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 logoWidget("assets/images/logo1.png"),
                 const SizedBox(height: 30),
                 reusableTextField(
-                  "Enter UserName",
+                  "Enter Email",
                   Icons.person_outline,
                   false,
                   _emailTextController,
@@ -60,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     reusableTextField(
                       "Enter Password",
                       Icons.lock_outline,
-                      false,
+                      !_isPasswordVisible,
                       _passwordTextController,
                     ),
                     IconButton(
@@ -85,8 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       .signInWithEmailAndPassword(
                     email: _emailTextController.text,
                     password: _passwordTextController.text,
-                  )
-                      .then((value) {
+                  ).then((value) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
