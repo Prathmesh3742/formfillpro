@@ -69,6 +69,12 @@ class _DocumentUploadFormState extends State<DocumentUploadForm> {
           await uploadImageToFirebase(image);
         }
       }
+      // Show success message if all images are uploaded successfully
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Images uploaded successfully.'),
+        ),
+      );
     } catch (e) {
       print('Error uploading images: $e');
     }

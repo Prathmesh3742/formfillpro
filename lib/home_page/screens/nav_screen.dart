@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formfillpro/home_page/screens/first_screen.dart';
+import 'package:formfillpro/home_page/screens/orders_screen.dart';
 // import 'package:formfillpro/home_page/screens/pan_screen.dart';
 import 'package:formfillpro/home_page/screens/profile/profile_screen.dart';
 import 'package:formfillpro/home_page/screens/second_screen.dart';
@@ -20,7 +21,8 @@ class NavScreen extends StatelessWidget {
       return [
         const FirstScreen(),
         const SecondScreen(),
-        const SettingsMain(),
+        // const SettingsMain(),
+        const OrderScreen(),
         const ProfileScreen(),
       ];
     }
