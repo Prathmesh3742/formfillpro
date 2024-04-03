@@ -1,14 +1,16 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DocumentUploadForm extends StatefulWidget {
-  final List<String> fieldNames;
-  final String headerTitle;
+  final List<String> documentsRequired;
+  final String documentName;
+  final String updateName; // New parameter
 
-  const DocumentUploadForm({Key? key, required this.fieldNames, required this.headerTitle}) : super(key: key);
+  const DocumentUploadForm({Key? key, required this.documentsRequired, required this.documentName, required this.updateName}) : super(key: key);
 
   @override
   _DocumentUploadFormState createState() => _DocumentUploadFormState();
@@ -19,14 +21,26 @@ class _DocumentUploadFormState extends State<DocumentUploadForm> {
   final picker = ImagePicker();
   bool _uploadButtonEnabled = false; // Track the upload button enabled status
 
+  late String _userId;
+
   @override
   void initState() {
     super.initState();
+    _fetchUserId();
     _updateUploadButtonStatus();
   }
 
+  Future<void> _fetchUserId() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        _userId = user.uid;
+      });
+    }
+  }
+
   void _updateUploadButtonStatus() {
-    bool allImagesSelected = widget.fieldNames.every((fieldName) => _images[fieldName] != null);
+    bool allImagesSelected = widget.documentsRequired.every((fieldName) => _images[fieldName] != null);
     setState(() {
       _uploadButtonEnabled = allImagesSelected;
     });
@@ -55,7 +69,7 @@ class _DocumentUploadFormState extends State<DocumentUploadForm> {
     if (!_uploadButtonEnabled) {
       // Show error message if any image is missing
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please upload all images before proceeding.'),
         ),
       );
@@ -63,24 +77,32 @@ class _DocumentUploadFormState extends State<DocumentUploadForm> {
     }
 
     try {
-      for (final fieldName in _images.keys) {
-        final image = _images[fieldName];
-        if (image != null) {
-          await uploadImageToFirebase(image);
-        }
-      }
-      // Show success message if all images are uploaded successfully
+      List<String> imageUrls = await uploadImages(); // Upload images and get their URLs
+      await applyForUpdate(imageUrls); // Apply for update by creating a document in Firestore
+      // Show success message if all images are uploaded and update is applied successfully
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Images uploaded successfully.'),
+        const SnackBar(
+          content: Text('Update applied successfully.'),
         ),
       );
     } catch (e) {
-      print('Error uploading images: $e');
+      print('Error applying for update: $e');
     }
   }
 
-  Future<void> uploadImageToFirebase(File image) async {
+  Future<List<String>> uploadImages() async {
+    List<String> imageUrls = [];
+    for (final fieldName in _images.keys) {
+      final image = _images[fieldName];
+      if (image != null) {
+        String imageUrl = await uploadImageToFirebase(image);
+        imageUrls.add(imageUrl);
+      }
+    }
+    return imageUrls;
+  }
+
+  Future<String> uploadImageToFirebase(File image) async {
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
         .ref()
         .child('images/${DateTime.now().millisecondsSinceEpoch}.jpg');
@@ -89,15 +111,29 @@ class _DocumentUploadFormState extends State<DocumentUploadForm> {
 
     String downloadURL = await ref.getDownloadURL();
 
-    // Store the download URL in Firestore or perform any other actions as needed
-    print('Image uploaded. Download URL: $downloadURL');
+    return downloadURL;
+  }
+
+  Future<void> applyForUpdate(List<String> imageUrls) async {
+    try {
+      await FirebaseFirestore.instance.collection('updates').add({
+        'userId': _userId,
+        'name': widget.documentName,
+        'updateName': widget.updateName, // Add updateName field
+        'documentsRequired': widget.documentsRequired,
+        'imageUrls': imageUrls,
+      });
+    } catch (e) {
+      print('Error applying for update: $e');
+      throw e;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.headerTitle),
+        title: Text(widget.documentName),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -106,10 +142,10 @@ class _DocumentUploadFormState extends State<DocumentUploadForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (final fieldName in widget.fieldNames) ...[
+                for (final fieldName in widget.documentsRequired) ...[
                   Text(
                     fieldName,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   ElevatedButton(
                     onPressed: () => getImage(fieldName),
@@ -130,7 +166,7 @@ class _DocumentUploadFormState extends State<DocumentUploadForm> {
                 ],
                 ElevatedButton(
                   onPressed: uploadImagesToFirebase,
-                  child: const Text('Upload Images to Firebase'),
+                  child: const Text('Upload Images and Apply for Update'),
                 ),
               ],
             ),

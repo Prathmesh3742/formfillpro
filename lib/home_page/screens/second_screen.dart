@@ -138,7 +138,7 @@ class SecondScreen extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      'Rs.50/',
+                                      'Rs.100/',
                                       style: textColor6,
                                     ),
                                     Text(
@@ -175,11 +175,13 @@ class SecondScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   // Update options
                   const UpdateOption(
-                    name: 'Name Update',
+                    documentName: 'Aadhaar card',
+                    updateName: 'Name Update',
                     documentsRequired: ['Identity Proof','Bank Passbook'],
                   ),
                   const UpdateOption(
-                    name: 'Address Update',
+                    documentName: 'Aadhaar card',
+                    updateName: 'Address Update',
                     documentsRequired: ['Proof of Address','Any gov document'],
                   ),
                 ],
@@ -193,13 +195,15 @@ class SecondScreen extends StatelessWidget {
 }
 
 class UpdateOption extends StatefulWidget {
-  final String name;
+  final String updateName;
   final List<String> documentsRequired;
+  final String documentName; // New parameter
 
   const UpdateOption({
     Key? key,
-    required this.name,
+    required this.updateName,
     required this.documentsRequired,
+    required this.documentName, // Required parameter
   }) : super(key: key);
 
   @override
@@ -219,7 +223,7 @@ class _UpdateOptionState extends State<UpdateOption> {
           children: [
             Expanded(
               child: Text(
-                widget.name,
+                widget.updateName,
                 style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 18,
@@ -289,8 +293,10 @@ class _UpdateOptionState extends State<UpdateOption> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => DocumentUploadForm(
-                          fieldNames: widget.documentsRequired,
-                          headerTitle: widget.name
+                          updateName: widget.updateName,
+                          documentsRequired: widget.documentsRequired,
+                          documentName: widget.documentName,
+                          // documentName: widget.documentName, // Pass documentName to DocumentUploadForm
                         ),
                       ),
                     );

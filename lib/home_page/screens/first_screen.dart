@@ -144,26 +144,12 @@ class FirstScreen extends StatelessWidget {
                                   'Aadhaar Update',
                                   style: textColor6,
                                 ),
-                                // SizedBox(height: 10),
-                                // Row(
-                                //   children: [
-                                //     Icon(
-                                //       Icons.location_on_sharp,
-                                //       size: 24,
-                                //       color: backGroundColor,
-                                //     ),
-                                //     Text(
-                                //       'Pang Mapha, Thailand',
-                                //       style: textColor7,
-                                //     ),
-                                //   ],
-                                // ),
                               ],
                             ),
                             Row(
                               children: [
                                 Text(
-                                  'Rs.50/',
+                                  'Rs.100/',
                                   style: textColor6,
                                 ),
                                 Text(
@@ -233,26 +219,12 @@ class FirstScreen extends StatelessWidget {
                                   'Pan card Update',
                                   style: textColor6,
                                 ),
-                                // SizedBox(height: 10),
-                                // Row(
-                                //   children: [
-                                //     Icon(
-                                //       Icons.location_on_sharp,
-                                //       size: 24,
-                                //       color: backGroundColor,
-                                //     ),
-                                //     Text(
-                                //       'Pang Mapha, Thailand',
-                                //       style: textColor7,
-                                //     ),
-                                //   ],
-                                // ),
                               ],
                             ),
                             Row(
                               children: [
                                 Text(
-                                  'Rs.50/',
+                                  'Rs.100/',
                                   style: textColor6,
                                 ),
                                 Text(
