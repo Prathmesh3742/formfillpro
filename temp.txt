@@ -1,0 +1,11 @@
+Single Registration Form: Have a single registration form where users, including admins, can sign up using their email and password.
+
+Role Assignment: After an admin registers, manually assign them the admin role in your backend system. This can be done by updating the user's role field in the database to indicate that they are an admin.
+
+Login Authentication: When users log in, authenticate their credentials as usual. Upon successful authentication, check their role in the backend.
+
+Conditional Navigation: Based on the user's role obtained during login, navigate them to the appropriate screens. For example, if the user is an admin, navigate them to the admin dashboard, and if they are a regular user, navigate them to the user dashboard.
+
+Admin UI: Design separate UI components specifically for admin functionality, such as an admin dashboard, user management screens, etc. These screens should only be accessible to users with the admin role.
+
+Security Measures: Ensure that access to admin functionality and screens is properly secured. This may involve implementing route guards or middleware to restrict access based on the user's role.

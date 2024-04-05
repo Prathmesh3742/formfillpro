@@ -5,6 +5,8 @@ import 'package:formfillpro/screens/reset_password.dart';
 import 'package:formfillpro/screens/signup_screen.dart';
 import 'package:formfillpro/utils/color_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:formfillpro/admin/homescreen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -68,7 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         _isPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
-                        color: Colors.white60, // Changed color to match the lock icon
+                        color: Colors.white60,
                       ),
                       onPressed: () {
                         setState(() {
@@ -80,19 +82,41 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 const SizedBox(height: 5),
                 forgetPassword(context),
-                firebaseUIButton(context, "Sign In", () {
-                  FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                    email: _emailTextController.text,
-                    password: _passwordTextController.text,
-                  ).then((value) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NavScreen(),
-                      ),
+                firebaseUIButton(context, "Sign In", () async {
+                  try {
+                    // Sign in with email and password
+                    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailTextController.text,
+                      password: _passwordTextController.text,
                     );
-                  }).catchError((error) {
+
+                    // Get the current user
+                    User? user = userCredential.user;
+
+                    if (user != null) {
+                      // Check if the user's document exists in Firestore
+                      var userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+                      if (userDoc.exists) {
+                        // Retrieve user's role from Firestore
+                        String userRole = userDoc.data()?['role'] ?? 'user';
+
+                        // Navigate to the appropriate screen based on the user's role
+                        if (userRole == 'admin') {
+                          print("Admin");
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomeScreen()),
+                          );
+                        } else {
+                          print("user");
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const NavScreen()),
+                          );
+                        }
+                      }
+                    }
+                  } catch (error) {
                     // Handle sign in errors
                     print("Error: $error");
                     // Show error message to the user
@@ -101,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         content: Text("Failed to sign in: $error"),
                       ),
                     );
-                  });
+                  }
                 }),
                 signUpOption(),
               ],

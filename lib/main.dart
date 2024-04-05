@@ -18,29 +18,41 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Your App Title',
-      theme: ThemeData(
-        
-      ),
-      home: AuthenticationWrapper(),
-      debugShowCheckedModeBanner: false, 
+      theme: ThemeData(),
+      home: const SignInScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class AuthenticationWrapper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasData) {
-          return const NavScreen();
-        } else {
-          return const SignInScreen();
-        }
-      },
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Your App Title',
+//       theme: ThemeData(
+        
+//       ),
+//       home: AuthenticationWrapper(),
+//       debugShowCheckedModeBanner: false, 
+//     );
+//   }
+// }
+
+// class AuthenticationWrapper extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder(
+//       stream: FirebaseAuth.instance.authStateChanges(),
+//       builder: (context, snapshot) {
+//         if (snapshot.connectionState == ConnectionState.waiting) {
+//           return const CircularProgressIndicator();
+//         } else if (snapshot.hasData) {
+//           return const NavScreen();
+//         } else {
+//           return const SignInScreen();
+//         }
+//       },
+//     );
+//   }
+// }
